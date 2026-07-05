@@ -1,6 +1,6 @@
 # binaryornot-rs
 
-Rust port of [binaryornot](https://github.com/binaryornot/binaryornot) — an ultra-lightweight library and CLI to check if a file is binary or text.
+Rust port of [binaryornot](https://github.com/binaryornot/binaryornot) — an ultra-lightweight library and CLI to check if a file is binary or text. ~7.5x faster than the original Python with PyO3 bindings included.
 
 ## Install
 
