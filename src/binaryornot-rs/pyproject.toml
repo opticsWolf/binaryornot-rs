@@ -1,0 +1,35 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "binaryornot_rs"
+version = "0.6.0"
+description = "Ultra-lightweight Rust library to check if a file is binary or text."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Audrey Roy Greenfeld", email = "aroy@alum.mit.edu" }]
+requires-python = ">=3.8"
+keywords = ["binary", "text", "detection", "file", "encoding"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Repository = "https://github.com/binaryornot/binaryornot"
+
+[tool.maturin]
+features = ["pyo3-ext"]
+module-name = "binaryornot_rs"

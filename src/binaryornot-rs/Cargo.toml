@@ -1,0 +1,31 @@
+[package]
+name = "binaryornot"
+version = "0.6.0"
+edition = "2021"
+rust-version = "1.70"
+description = "Ultra-lightweight Rust library and CLI to check if a file is binary or text."
+readme = "README.md"
+license = "MIT"
+authors = ["Audrey Roy Greenfeld <aroy@alum.mit.edu>"]
+repository = "https://github.com/binaryornot/binaryornot"
+keywords = ["binary", "text", "detection", "file", "encoding"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "binaryornot"
+path = "src/main.rs"
+
+[lib]
+name = "binaryornot_rs"
+crate-type = ["rlib", "cdylib"]
+
+[dependencies]
+encoding_rs = "0.8"
+pyo3 = { version = "0.28", features = ["extension-module"], optional = true }
+
+[dev-dependencies]
+tempfile = "3"
+
+[features]
+default = []
+pyo3-ext = ["pyo3"]
