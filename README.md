@@ -3,7 +3,7 @@
 [![CI](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/ci.yml)
 [![crates.io](https://img.shields.io/crates/v/binaryornot-rs.svg)](https://crates.io/crates/binaryornot-rs)
 [![PyPI](https://img.shields.io/pypi/v/binaryornot-rs.svg)](https://pypi.org/project/binaryornot-rs/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/binaryornot-rs.svg)](https://pypi.org/project/binaryornot-rs/)
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org)
 [![Rust](https://img.shields.io/badge/rust-1.70+-orange.svg)](https://www.rust-lang.org)
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
