@@ -329,19 +329,19 @@ mod tests {
     #[test]
     fn test_plain_text_classification() {
         let features = [
-            0.0,    // null_ratio
-            0.0,    // control_ratio
-            1.0,    // printable_ascii_ratio
-            0.0,    // high_byte_ratio
-            1.0,    // utf8_valid
-            0.0,    // even_null_ratio
-            0.0,    // odd_null_ratio
-            4.0,    // entropy
+            0.0, // null_ratio
+            0.0, // control_ratio
+            1.0, // printable_ascii_ratio
+            0.0, // high_byte_ratio
+            1.0, // utf8_valid
+            0.0, // even_null_ratio
+            0.0, // odd_null_ratio
+            4.0, // entropy
             0.0, 0.0, 0.0, 0.0, 0.0, // BOM flags
             0.0, 0.0, 0.0, 0.0, // UTF-16/32
-            1.0,    // longest_printable_run
+            1.0, // longest_printable_run
             0.0, 0.0, 0.0, 0.0, 0.0, // CJK
-            0.0,    // has_magic
+            0.0, // has_magic
         ];
         assert!(!is_binary(&features));
     }
@@ -352,19 +352,19 @@ mod tests {
         // Trace: control > threshold → null > 0.16 → has_magic ≤ 0.5 → high_byte > 0.08
         //   → run > 0.29 → return true
         let features = [
-            0.5,    // null_ratio
-            0.1,    // control_ratio
-            0.05,   // printable_ascii_ratio
-            0.4,    // high_byte_ratio
-            0.0,    // utf8_valid
-            0.25,   // even_null_ratio
-            0.25,   // odd_null_ratio
-            5.0,    // entropy
+            0.5,  // null_ratio
+            0.1,  // control_ratio
+            0.05, // printable_ascii_ratio
+            0.4,  // high_byte_ratio
+            0.0,  // utf8_valid
+            0.25, // even_null_ratio
+            0.25, // odd_null_ratio
+            5.0,  // entropy
             0.0, 0.0, 0.0, 0.0, 0.0, // BOM flags
-            0.0, 0.0, 0.0, 0.0, // UTF-16/32
-            0.35,   // longest_printable_run (above 0.291667 threshold)
+            0.0, 0.0, 0.0, 0.0,  // UTF-16/32
+            0.35, // longest_printable_run (above 0.291667 threshold)
             0.0, 0.0, 0.0, 0.0, 0.0, // CJK
-            0.0,    // has_magic
+            0.0, // has_magic
         ];
         assert!(is_binary(&features));
     }

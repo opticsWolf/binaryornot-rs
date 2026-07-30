@@ -1,7 +1,6 @@
 /// Core binary/text detection logic.
 ///
 /// Provides `is_binary()` (file path) and `is_binary_string()` (raw bytes).
-
 use std::fs;
 use std::io::Read;
 use std::path::Path;
@@ -110,7 +109,8 @@ mod tests {
     #[test]
     fn test_utf16_text() {
         // UTF-16 LE encoded text (no BOM)
-        let chunk: Vec<u8> = "Hello, world! This is a test of UTF-16 LE detection. ".encode_utf16()
+        let chunk: Vec<u8> = "Hello, world! This is a test of UTF-16 LE detection. "
+            .encode_utf16()
             .flat_map(|c| c.to_le_bytes())
             .collect();
         assert!(!is_binary_string(&chunk));

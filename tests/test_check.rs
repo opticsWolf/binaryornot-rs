@@ -1,7 +1,6 @@
 /// Integration tests for binaryornot.
 ///
 /// These tests mirror the Python test suite from binaryornot/tests/test_check.py.
-
 use binaryornot_rs::check::{is_binary, is_binary_string};
 use std::io::Write;
 use std::path::PathBuf;
@@ -236,8 +235,7 @@ fn test_magic_feature_for_png() {
 #[test]
 fn test_magic_feature_unset_for_text() {
     use binaryornot_rs::features::compute_features;
-    let chunk = b"Hello, world! This is plain text. "
-        .repeat(16);
+    let chunk = b"Hello, world! This is plain text. ".repeat(16);
     let features = compute_features(&chunk[..512]);
     assert_eq!(features[23], 0.0);
 }

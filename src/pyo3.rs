@@ -3,7 +3,6 @@
 /// Exposes the same API as the original Python package:
 /// - `is_binary(filename, check_extensions=True) -> bool`
 /// - `is_binary_string(chunk: bytes) -> bool`
-
 use pyo3::prelude::*;
 use std::path::Path;
 

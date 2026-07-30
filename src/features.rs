@@ -21,8 +21,7 @@
 ///  21: try_euc_jp           - 1.0 if chunk decodes as EUC-JP
 ///  22: try_euc_kr           - 1.0 if chunk decodes as EUC-KR
 ///  23: has_magic_signature  - 1.0 if chunk starts with a known binary signature
-
-use encoding_rs::{GB18030, BIG5, EUC_KR, EUC_JP, SHIFT_JIS, UTF_16LE, UTF_16BE, UTF_8};
+use encoding_rs::{BIG5, EUC_JP, EUC_KR, GB18030, SHIFT_JIS, UTF_16BE, UTF_16LE, UTF_8};
 
 use crate::signatures::has_known_binary_signature;
 
@@ -178,31 +177,75 @@ pub fn compute_features(chunk: &[u8]) -> [f64; 24] {
     };
 
     // Even/odd null ratios
-    let even_null_ratio = if even_total > 0 { even_nulls as f64 / even_total as f64 } else { 0.0 };
-    let odd_null_ratio = if odd_total > 0 { odd_nulls as f64 / odd_total as f64 } else { 0.0 };
+    let even_null_ratio = if even_total > 0 {
+        even_nulls as f64 / even_total as f64
+    } else {
+        0.0
+    };
+    let odd_null_ratio = if odd_total > 0 {
+        odd_nulls as f64 / odd_total as f64
+    } else {
+        0.0
+    };
 
     // Shannon entropy
     let entropy = compute_entropy(&hist, chunk.len());
 
     // BOM detection
-    let bom_utf32le = if chunk.starts_with(b"\xff\xfe\x00\x00") { 1.0 } else { 0.0 };
-    let bom_utf32be = if chunk.starts_with(b"\x00\x00\xfe\xff") { 1.0 } else { 0.0 };
-    let bom_utf16le = if chunk.starts_with(b"\xff\xfe") && !chunk.starts_with(b"\xff\xfe\x00\x00") { 1.0 } else { 0.0 };
-    let bom_utf16be = if chunk.starts_with(b"\xfe\xff") { 1.0 } else { 0.0 };
-    let bom_utf8 = if chunk.starts_with(b"\xef\xbb\xbf") { 1.0 } else { 0.0 };
+    let bom_utf32le = if chunk.starts_with(b"\xff\xfe\x00\x00") {
+        1.0
+    } else {
+        0.0
+    };
+    let bom_utf32be = if chunk.starts_with(b"\x00\x00\xfe\xff") {
+        1.0
+    } else {
+        0.0
+    };
+    let bom_utf16le = if chunk.starts_with(b"\xff\xfe") && !chunk.starts_with(b"\xff\xfe\x00\x00") {
+        1.0
+    } else {
+        0.0
+    };
+    let bom_utf16be = if chunk.starts_with(b"\xfe\xff") {
+        1.0
+    } else {
+        0.0
+    };
+    let bom_utf8 = if chunk.starts_with(b"\xef\xbb\xbf") {
+        1.0
+    } else {
+        0.0
+    };
 
     // Encoding validity checks (minimum length requirements match Python version)
     let chunk_len = chunk.len();
     let (try_utf16le, try_utf16be, try_utf32le, try_utf32be) = if chunk_len >= 10 {
-        let try_utf16le = if chunk_len % 2 == 0 && !UTF_16LE.decode(chunk).2 { 1.0 } else { 0.0 };
-        let try_utf16be = if chunk_len % 2 == 0 && !UTF_16BE.decode(chunk).2 { 1.0 } else { 0.0 };
+        let try_utf16le = if chunk_len % 2 == 0 && !UTF_16LE.decode(chunk).2 {
+            1.0
+        } else {
+            0.0
+        };
+        let try_utf16be = if chunk_len % 2 == 0 && !UTF_16BE.decode(chunk).2 {
+            1.0
+        } else {
+            0.0
+        };
         (try_utf16le, try_utf16be, 0.0, 0.0)
     } else {
         (0.0, 0.0, 0.0, 0.0)
     };
     let (try_utf32le, try_utf32be) = if chunk_len >= 16 {
-        let try_utf32le = if chunk_len % 4 == 0 && decode_utf32le(chunk).is_ok() { 1.0 } else { 0.0 };
-        let try_utf32be = if chunk_len % 4 == 0 && decode_utf32be(chunk).is_ok() { 1.0 } else { 0.0 };
+        let try_utf32le = if chunk_len % 4 == 0 && decode_utf32le(chunk).is_ok() {
+            1.0
+        } else {
+            0.0
+        };
+        let try_utf32be = if chunk_len % 4 == 0 && decode_utf32be(chunk).is_ok() {
+            1.0
+        } else {
+            0.0
+        };
         (try_utf32le, try_utf32be)
     } else {
         (try_utf32le, try_utf32be)
@@ -212,39 +255,63 @@ pub fn compute_features(chunk: &[u8]) -> [f64; 24] {
 
     // CJK encoding checks (minimum length 10, matching Python)
     // encoding_rs returns (Cow<str>, &Encoding, bool_failed) — index 2 is "had errors"
-    let try_gb2312 = if chunk_len >= 10 && !GB18030.decode(chunk).2 { 1.0 } else { 0.0 };
-    let try_big5 = if chunk_len >= 10 && !BIG5.decode(chunk).2 { 1.0 } else { 0.0 };
-    let try_shift_jis = if chunk_len >= 10 && !SHIFT_JIS.decode(chunk).2 { 1.0 } else { 0.0 };
-    let try_euc_jp = if chunk_len >= 10 && !EUC_JP.decode(chunk).2 { 1.0 } else { 0.0 };
-    let try_euc_kr = if chunk_len >= 10 && !EUC_KR.decode(chunk).2 { 1.0 } else { 0.0 };
+    let try_gb2312 = if chunk_len >= 10 && !GB18030.decode(chunk).2 {
+        1.0
+    } else {
+        0.0
+    };
+    let try_big5 = if chunk_len >= 10 && !BIG5.decode(chunk).2 {
+        1.0
+    } else {
+        0.0
+    };
+    let try_shift_jis = if chunk_len >= 10 && !SHIFT_JIS.decode(chunk).2 {
+        1.0
+    } else {
+        0.0
+    };
+    let try_euc_jp = if chunk_len >= 10 && !EUC_JP.decode(chunk).2 {
+        1.0
+    } else {
+        0.0
+    };
+    let try_euc_kr = if chunk_len >= 10 && !EUC_KR.decode(chunk).2 {
+        1.0
+    } else {
+        0.0
+    };
 
-    let has_magic = if has_known_binary_signature(chunk) { 1.0 } else { 0.0 };
+    let has_magic = if has_known_binary_signature(chunk) {
+        1.0
+    } else {
+        0.0
+    };
 
     [
-        null_ratio,           // 0
-        control_ratio,        // 1
-        printable_ascii_ratio,// 2
-        high_byte_ratio,      // 3
-        utf8_valid,           // 4
-        even_null_ratio,      // 5
-        odd_null_ratio,       // 6
-        entropy,              // 7
-        bom_utf32le,          // 8
-        bom_utf32be,          // 9
-        bom_utf16le,          // 10
-        bom_utf16be,          // 11
-        bom_utf8,             // 12
-        try_utf16le,          // 13
-        try_utf16be,          // 14
-        try_utf32le,          // 15
-        try_utf32be,          // 16
-        longest_printable_run,// 17
-        try_gb2312,           // 18
-        try_big5,             // 19
-        try_shift_jis,        // 20
-        try_euc_jp,           // 21
-        try_euc_kr,           // 22
-        has_magic,            // 23
+        null_ratio,            // 0
+        control_ratio,         // 1
+        printable_ascii_ratio, // 2
+        high_byte_ratio,       // 3
+        utf8_valid,            // 4
+        even_null_ratio,       // 5
+        odd_null_ratio,        // 6
+        entropy,               // 7
+        bom_utf32le,           // 8
+        bom_utf32be,           // 9
+        bom_utf16le,           // 10
+        bom_utf16be,           // 11
+        bom_utf8,              // 12
+        try_utf16le,           // 13
+        try_utf16be,           // 14
+        try_utf32le,           // 15
+        try_utf32be,           // 16
+        longest_printable_run, // 17
+        try_gb2312,            // 18
+        try_big5,              // 19
+        try_shift_jis,         // 20
+        try_euc_jp,            // 21
+        try_euc_kr,            // 22
+        has_magic,             // 23
     ]
 }
 
@@ -338,9 +405,11 @@ mod tests {
 
     #[test]
     fn test_utf16le_detection() {
-        let chunk = "Hello, world!".encode_utf16().flat_map(|c| c.to_le_bytes()).collect::<Vec<u8>>();
+        let chunk = "Hello, world!"
+            .encode_utf16()
+            .flat_map(|c| c.to_le_bytes())
+            .collect::<Vec<u8>>();
         let features = compute_features(&chunk);
         assert_eq!(features[13], 1.0); // try_utf16le
     }
 }
-
