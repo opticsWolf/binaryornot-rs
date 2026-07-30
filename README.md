@@ -3,8 +3,8 @@
 [![CI](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/ci.yml)
 [![crates.io](https://img.shields.io/crates/v/binaryornot-rs.svg)](https://crates.io/crates/binaryornot-rs)
 [![PyPI](https://img.shields.io/pypi/v/binaryornot-rs.svg)](https://pypi.org/project/binaryornot-rs/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/binaryornot-rs.svg)](https://pypi.org/project/binaryornot-rs/)
 [![Rust](https://img.shields.io/badge/rust-1.70+-orange.svg)](https://www.rust-lang.org)
-[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org)
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Rust port of [binaryornot](https://github.com/binaryornot/binaryornot) — an ultra-lightweight library and CLI to check if a file is binary or text. ~7.2x faster than the original Python with PyO3 bindings included.
