@@ -1,6 +1,6 @@
 # binaryornot-rs
 
-[![CI](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/CI.yml/badge.svg)](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/CI.yml)
+[![CI](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/opticsWolf/binaryornot-rs/actions/workflows/ci.yml)
 [![crates.io](https://img.shields.io/crates/v/binaryornot-rs.svg)](https://crates.io/crates/binaryornot-rs)
 [![downloads](https://img.shields.io/crates/d/binaryornot-rs.svg)](https://crates.io/crates/binaryornot-rs)
 [![PyPI version](https://img.shields.io/pypi/v/binaryornot-rs.svg)](https://pypi.org/project/binaryornot-rs/)
