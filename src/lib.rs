@@ -30,5 +30,7 @@
 pub mod check;
 pub mod extensions;
 pub mod features;
+#[cfg(feature = "python")]
+mod pyo3;
 pub mod signatures;
 pub mod tree;

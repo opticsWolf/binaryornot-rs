@@ -27,9 +27,9 @@ lint:
 test:
     cargo test
 
-# Run tests with PyO3 bindings
-test-pyo3:
-    cargo test --features pyo3-ext
+# Run tests with Python bindings feature
+test-py:
+    cargo test --features python
 
 # Run tests with output
 testv:
@@ -49,15 +49,15 @@ doc:
 
 # Build Python wheel with maturin
 wheel:
-    maturin build --release --features pyo3-ext
+    maturin build --release
 
-# Install Python bindings locally
+# Install Python bindings locally (editable dev mode)
 dev-install:
-    maturin develop --features pyo3-ext
+    maturin develop
 
 # Run Python tests (requires installed wheel)
 test-python:
-    pytest tests/
+    pytest tests/python/ -v --timeout=60 --timeout-method=thread
 
 # Run benchmark
 benchmark:

@@ -18,11 +18,11 @@ cargo build --release
 
 ### Python bindings
 
-Build a wheel using Maturin:
+Build a wheel using Maturin (PyO3 is enabled by default for maturin builds):
 
 ```sh
 pip install maturin
-maturin build --release --features pyo3-ext
+maturin build --release
 pip install target/wheels/binaryornot_rs-*.whl
 ```
 
@@ -101,34 +101,29 @@ No ML frameworks, no serialization, no runtime model loading. The decision tree 
 ## Project structure
 
 ```
-src/
-   └── binaryornot-rs/        # Rust source (new)
-       ├── Cargo.toml
-       ├── pyproject.toml
-       ├── src/
-       │   ├── check.rs
-       │   ├── extensions.rs
-       │   ├── features.rs
-       │   ├── lib.rs
-       │   ├── main.rs
-       │   ├── pyo3.rs
-       │   ├── signatures.rs
-       │   └── tree.rs
-       └── tests/
-           ├── benchmark.py
-           ├── test_binaryornot_rs.py
-           ├── test_check.rs
-           ├── test_encoding_coverage.py
-           ├── test_encoding_warning.py
-           └── test_sdist.py
+├── Cargo.toml             # Rust crate (pyo3 optional feature)
+├── pyproject.toml         # Python package config (maturin)
+├── src/
+│   ├── check.rs
+│   ├── extensions.rs
+│   ├── features.rs
+│   ├── lib.rs
+│   ├── main.rs            # CLI
+│   ├── pyo3.rs            # Python bindings (gated by `python` feature)
+│   ├── signatures.rs
+│   └── tree.rs
+└── tests/
+    ├── benchmark.py
+    ├── test_check.rs      # Rust integration tests
+    └── python/
+        ├── test_binaryornot_rs.py
+        ├── test_encoding_warning.py
+        └── test_sdist.py
 ```
 
 Additional directories:
 
-- **`tests/`** — Top-level test files and test fixtures (`files/`, `isBinaryFile/`)
-- **`docs/`** — MkDocs documentation (api, installation, usage)
-- **`scripts/`** — Development scripts (`generate_fixtures.py`, `train_detector.py`)
-- **`CHANGELOG/`** — Per-version changelog entries (0.1.0 through 0.6.0)
+- **`tests/`** — Test files and fixtures (`files/`, `isBinaryFile/`)
 
 ## Documentation
 
@@ -138,18 +133,18 @@ Additional directories:
 
 ## Testing
 
-The Rust test suite mirrors the original Python `binaryornot` tests:
+Rust tests:
 
 ```sh
-cargo test --features pyo3-ext
+cargo test
 ```
 
 Python tests (requires installed wheel):
 
 ```sh
-pip install maturin pytest
-maturin build --release --features pyo3-ext
-pip install target/wheels/binaryornot_rs-*.whl
+pip install maturin pytest pytest-timeout
+maturin develop --release
+pytest tests/python/ -v --timeout=60 --timeout-method=thread
 pytest tests/test_binaryornot_rs.py
 pytest tests/test_encoding_coverage.py
 pytest tests/test_encoding_warning.py

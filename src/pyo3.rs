@@ -7,7 +7,7 @@
 use pyo3::prelude::*;
 use std::path::Path;
 
-use ::binaryornot_rs::check::{is_binary as rust_is_binary, is_binary_string as rust_is_binary_string};
+use crate::check::{is_binary as rust_is_binary, is_binary_string as rust_is_binary_string};
 
 /// Check if a file is binary or text.
 ///
