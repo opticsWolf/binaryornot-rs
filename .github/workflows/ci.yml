@@ -68,14 +68,29 @@ jobs:
         run: cargo test
 
       # Python extension build and tests
+      - name: Create virtualenv
+        run: python -m venv .venv
+
       - name: Install maturin
-        run: pip install maturin pytest pytest-timeout
+        run: .venv/bin/python -m pip install maturin pytest pytest-timeout
 
       - name: Build Python extension
-        run: maturin develop --release
+        shell: bash
+        run: |          
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            .venv/Scripts/python -m maturin develop --release
+          else
+            .venv/bin/python -m maturin develop --release
+          fi
 
       - name: Python tests
-        run: pytest tests/python/ -v --timeout=60 --timeout-method=thread
+        shell: bash
+        run: |          
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            .venv/Scripts/pytest tests/python/ -v --timeout=60 --timeout-method=thread
+          else
+            .venv/bin/pytest tests/python/ -v --timeout=60 --timeout-method=thread
+          fi
 
   # ── Build Wheels ─────────────────────────────────────────────────
 
@@ -103,7 +118,6 @@ jobs:
       - uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.target }}
-          working-directory: python
           args: --release --out dist
           manylinux: auto
       - uses: actions/upload-artifact@v4
