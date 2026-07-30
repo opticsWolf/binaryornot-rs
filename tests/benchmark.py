@@ -185,12 +185,14 @@ def run_benchmarks():
 
     all_speedups = file_speedups + string_speedups
     print(f"  File-based tests:   {len(file_speedups):>3} tests, "
-          f"median speedup: {statistics.median(file_speedups):>7.1f}x")
+          f"median speedup: {statistics.median(file_speedups):>7.1f}x, "
+          f"mean speedup: {statistics.mean(file_speedups):>7.1f}x")
     print(f"  String-based tests: {len(string_speedups):>3} tests, "
-          f"median speedup: {statistics.median(string_speedups):>7.1f}x")
+          f"median speedup: {statistics.median(string_speedups):>7.1f}x, "
+          f"mean speedup: {statistics.mean(string_speedups):>7.1f}x")
     print(f"  Overall:            {len(all_speedups):>3} tests, "
-          f"median speedup: {statistics.median(all_speedups):>7.1f}x")
-    print(f"                      mean speedup:   {statistics.mean(all_speedups):>7.1f}x")
+          f"median speedup: {statistics.median(all_speedups):>7.1f}x, "
+          f"mean speedup: {statistics.mean(all_speedups):>7.1f}x")
     print("=" * 78)
 
 
