@@ -6,7 +6,7 @@ build-backend = "maturin"
 name = "binaryornot-rs"
 dynamic = ["version"]
 description = "Ultra-lightweight Rust library to check if a file is binary or text."
-readme = "../README.md"
+readme = "README.md"
 license = "MIT"
 authors = [
     { name = "Audrey Roy Greenfeld", email = "aroy@alum.mit.edu" },
