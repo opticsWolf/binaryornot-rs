@@ -43,6 +43,7 @@ dev = [
 [tool.maturin]
 features = ["python"]
 module-name = "binaryornot_rs"
+compatibility = "manylinux_2_28"
 
 [tool.pytest.ini_options]
 testpaths = ["tests/python"]
