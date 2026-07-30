@@ -20,7 +20,7 @@ import binaryornot_rs
 
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
-# Base directory for test fixture files (from the original Python project)
+# Base directory for test fixture files
 BASE_DIR = Path(__file__).parent.parent.parent / "tests"
 
 

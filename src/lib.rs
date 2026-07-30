@@ -27,16 +27,8 @@
 //! false
 //! ```
 //!
-//! ## Python bindings
-//!
-//! Build with `cargo build --features pyo3-ext` to produce a Python extension module.
-//! Use `maturin build` for a wheel distribution.
-
 pub mod check;
 pub mod extensions;
 pub mod features;
 pub mod signatures;
 pub mod tree;
-
-#[cfg(feature = "pyo3-ext")]
-mod pyo3;

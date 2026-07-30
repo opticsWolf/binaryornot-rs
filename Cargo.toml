@@ -1,5 +1,5 @@
 [package]
-name = "binaryornot"
+name = "binaryornot-rs"
 version = "0.6.0"
 edition = "2021"
 rust-version = "1.70"
@@ -21,15 +21,9 @@ path = "src/main.rs"
 [lib]
 name = "binaryornot_rs"
 path = "src/lib.rs"
-crate-type = ["rlib", "cdylib"]
 
 [dependencies]
 encoding_rs = "0.8"
-pyo3 = { version = "0.28", features = ["extension-module"], optional = true }
 
 [dev-dependencies]
 tempfile = "3"
-
-[features]
-default = []
-pyo3-ext = ["pyo3"]

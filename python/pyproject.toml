@@ -3,10 +3,10 @@ requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "binaryornot_rs"
-version = "0.6.0"
+name = "binaryornot-rs"
+dynamic = ["version"]
 description = "Ultra-lightweight Rust library to check if a file is binary or text."
-readme = "README.md"
+readme = "../README.md"
 license = "MIT"
 authors = [
     { name = "Audrey Roy Greenfeld", email = "aroy@alum.mit.edu" },
@@ -34,5 +34,4 @@ classifiers = [
 Repository = "https://github.com/opticsWolf/binaryornot-rs"
 
 [tool.maturin]
-features = ["pyo3-ext"]
 module-name = "binaryornot_rs"
