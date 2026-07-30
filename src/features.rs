@@ -31,24 +31,55 @@ const fn is_control(b: u8) -> bool {
     b < 32 && b != 9 && b != 10 && b != 13
 }
 
-/// Strip trailing bytes that form an incomplete UTF-8 sequence.
+/// Determine how many trailing bytes to strip to fix an incomplete UTF-8
+/// sequence. Returns 0 if the trailing bytes form a complete sequence.
 ///
-/// When reading a fixed-size chunk (e.g. 512 bytes), the last byte(s) may
-/// be the start of a multi-byte character that continues in the next chunk.
-/// This function removes those trailing incomplete bytes (at most 3) so
-/// the remaining data can be checked for UTF-8 validity.
-fn strip_trailing_incomplete_utf8(data: &[u8]) -> &[u8] {
-    // A UTF-8 character is at most 4 bytes, so we only need to check
-    // the last 3 bytes for an incomplete sequence.
-    for i in 0..=3 {
-        let len = data.len().saturating_sub(i);
-        if len > 0 && !UTF_8.decode(&data[..len]).2 {
-            // Found valid UTF-8 at this length
-            return &data[..len];
-        }
+/// Only inspects byte values — no decode calls. Handles cascading incomplete
+/// sequences (e.g. `...E0 81 C3` where stripping `C3` exposes incomplete `E0 81`).
+fn trailing_incomplete_count(data: &[u8]) -> usize {
+    let len = data.len();
+    if len == 0 {
+        return 0;
     }
-    // Fallback: return full data
-    data
+
+    let last = data[len - 1];
+
+    if (0x80..=0xBF).contains(&last) {
+        // Last byte is a continuation byte. Count trailing continuations.
+        let mut trail = 0usize;
+        for &b in data.iter().rev() {
+            if (0x80..=0xBF).contains(&b) {
+                trail += 1;
+            } else {
+                break;
+            }
+        }
+        // If all bytes are continuations, no leading byte exists — all invalid.
+        if trail >= len {
+            return len;
+        }
+        let lead_idx = len - trail - 1;
+        let expected = match data[lead_idx] {
+            0xC0..=0xDF => 2,
+            0xE0..=0xEF => 3,
+            0xF0..=0xF7 => 4,
+            _ => 1,
+        };
+        if trail < expected - 1 {
+            // Incomplete: strip leading byte + continuations
+            trail + 1
+        } else {
+            // Sequence is complete
+            0
+        }
+    } else if last >= 0xC0 {
+        // Last byte is a leading byte — definitely incomplete (no continuations after it).
+        // Strip just this byte; the byte before it might also need checking.
+        1
+    } else {
+        // Single-byte ASCII — sequence is complete.
+        0
+    }
 }
 
 /// Check if a byte is printable ASCII (0x20-0x7E) or common whitespace (tab, newline, CR).
@@ -122,10 +153,29 @@ pub fn compute_features(chunk: &[u8]) -> [f64; 24] {
     let high_byte_ratio = high_count as f64 / n;
 
     // UTF-8 validity (encoding_rs returns (Cow<str>, &Encoding, bool_failed))
-    // Strip trailing incomplete multi-byte sequence so 512-byte chunks that
-    // cut a character in half still register as valid UTF-8.
-    let utf8_chunk = strip_trailing_incomplete_utf8(chunk);
-    let utf8_valid = if UTF_8.decode(utf8_chunk).2 { 0.0 } else { 1.0 };
+    // First try the full chunk — most text is already valid UTF-8.
+    // Only strip trailing incomplete sequences if the full decode fails.
+    let utf8_valid = if !UTF_8.decode(chunk).2 {
+        // Full chunk is valid UTF-8 — no stripping needed.
+        1.0
+    } else {
+        // Decode failed — strip trailing incomplete sequence(s) and retry.
+        // UTF-8 sequences are at most 4 bytes, so at most 2 iterations needed.
+        let mut data = chunk;
+        let mut valid = 0.0;
+        for _ in 0..2 {
+            let strip = trailing_incomplete_count(data);
+            if strip == 0 || data.len() <= strip {
+                break;
+            }
+            data = &data[..data.len() - strip];
+            if !UTF_8.decode(data).2 {
+                valid = 1.0;
+                break;
+            }
+        }
+        valid
+    };
 
     // Even/odd null ratios
     let even_null_ratio = if even_total > 0 { even_nulls as f64 / even_total as f64 } else { 0.0 };
