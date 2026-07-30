@@ -2,7 +2,7 @@
 ///
 /// If a file's first bytes match any of these signatures, it is classified as binary
 /// without needing the decision tree.
-
+///
 /// All known binary file format magic byte sequences.
 const SIGNATURES: &[&[u8]] = &[
     // PNG

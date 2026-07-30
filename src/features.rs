@@ -83,7 +83,7 @@ fn trailing_incomplete_count(data: &[u8]) -> usize {
 
 /// Check if a byte is printable ASCII (0x20-0x7E) or common whitespace (tab, newline, CR).
 fn is_printable_or_whitespace(b: u8) -> bool {
-    (b >= 0x20 && b <= 0x7E) || b == 9 || b == 10 || b == 13
+    (0x20..=0x7E).contains(&b) || b == 9 || b == 10 || b == 13
 }
 
 /// Compute all 24 features from a byte chunk.
@@ -335,7 +335,7 @@ fn decode_utf32le(bytes: &[u8]) -> Result<(), ()> {
     }
     for chunk in bytes.chunks_exact(4) {
         let cp = u32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
-        if cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF) {
+        if cp > 0x10FFFF || (0xD800..=0xDFFF).contains(&cp) {
             return Err(());
         }
     }
@@ -349,7 +349,7 @@ fn decode_utf32be(bytes: &[u8]) -> Result<(), ()> {
     }
     for chunk in bytes.chunks_exact(4) {
         let cp = u32::from_be_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
-        if cp > 0x10FFFF || (cp >= 0xD800 && cp <= 0xDFFF) {
+        if cp > 0x10FFFF || (0xD800..=0xDFFF).contains(&cp) {
             return Err(());
         }
     }

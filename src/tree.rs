@@ -3,7 +3,12 @@
 /// Ported from the Python decision tree in binaryornot/tree.py.
 /// Takes the 24-element feature vector from `compute_features()`.
 /// Returns `true` for binary, `false` for text.
-
+// Auto-generated code — clippy flags the `return true/false` pattern as needless.
+#[allow(
+    clippy::needless_return,
+    clippy::needless_bool,
+    clippy::if_same_then_else
+)]
 pub fn is_binary(features: &[f64; 24]) -> bool {
     if features[1] <= 0.000977 {
         if features[17] <= 0.000977 {
