@@ -72,7 +72,13 @@ jobs:
         run: python -m venv .venv
 
       - name: Install maturin
-        run: .venv/bin/python -m pip install maturin pytest pytest-timeout
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            .venv/Scripts/python -m pip install maturin pytest pytest-timeout
+          else
+            .venv/bin/python -m pip install maturin pytest pytest-timeout
+          fi
 
       - name: Build Python extension
         shell: bash
