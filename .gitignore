@@ -1,6 +1,8 @@
 # Rust
 **/target/
 **/*.rs.bk
+*.dll
+*.pyd
 
 # Cargo
 Cargo.lock

@@ -61,7 +61,7 @@ test-python:
 
 # Run benchmark
 benchmark:
-    python src/binaryornot-rs/tests/benchmark.py
+    python tests/benchmark.py
 
 # Clean build artifacts
 clean:

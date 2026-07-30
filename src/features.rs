@@ -31,6 +31,26 @@ const fn is_control(b: u8) -> bool {
     b < 32 && b != 9 && b != 10 && b != 13
 }
 
+/// Strip trailing bytes that form an incomplete UTF-8 sequence.
+///
+/// When reading a fixed-size chunk (e.g. 512 bytes), the last byte(s) may
+/// be the start of a multi-byte character that continues in the next chunk.
+/// This function removes those trailing incomplete bytes (at most 3) so
+/// the remaining data can be checked for UTF-8 validity.
+fn strip_trailing_incomplete_utf8(data: &[u8]) -> &[u8] {
+    // A UTF-8 character is at most 4 bytes, so we only need to check
+    // the last 3 bytes for an incomplete sequence.
+    for i in 0..=3 {
+        let len = data.len().saturating_sub(i);
+        if len > 0 && !UTF_8.decode(&data[..len]).2 {
+            // Found valid UTF-8 at this length
+            return &data[..len];
+        }
+    }
+    // Fallback: return full data
+    data
+}
+
 /// Check if a byte is printable ASCII (0x20-0x7E) or common whitespace (tab, newline, CR).
 fn is_printable_or_whitespace(b: u8) -> bool {
     (b >= 0x20 && b <= 0x7E) || b == 9 || b == 10 || b == 13
@@ -102,7 +122,10 @@ pub fn compute_features(chunk: &[u8]) -> [f64; 24] {
     let high_byte_ratio = high_count as f64 / n;
 
     // UTF-8 validity (encoding_rs returns (Cow<str>, &Encoding, bool_failed))
-    let utf8_valid = if UTF_8.decode(chunk).2 { 0.0 } else { 1.0 };
+    // Strip trailing incomplete multi-byte sequence so 512-byte chunks that
+    // cut a character in half still register as valid UTF-8.
+    let utf8_chunk = strip_trailing_incomplete_utf8(chunk);
+    let utf8_valid = if UTF_8.decode(utf8_chunk).2 { 0.0 } else { 1.0 };
 
     // Even/odd null ratios
     let even_null_ratio = if even_total > 0 { even_nulls as f64 / even_total as f64 } else { 0.0 };
@@ -270,3 +293,4 @@ mod tests {
         assert_eq!(features[13], 1.0); // try_utf16le
     }
 }
+

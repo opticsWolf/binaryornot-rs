@@ -307,3 +307,8 @@ fn test_ttf_signature() {
     let data = b"\x00\x01\x00\x00\x00\x08\x00\x80";
     assert!(is_binary_string(data));
 }
+
+#[test]
+fn test_russian_text() {
+    assert!(!is_binary("tests/isBinaryFile/russian_file.rst", false).unwrap());
+}
