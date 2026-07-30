@@ -179,9 +179,9 @@ pytest tests/test_sdist.py                   # 6 tests
 
 | API | Tests | Median Speedup | Mean Speedup |
 |-----|-------|----------------|--------------|
-| File-based (`is_binary`) | 35 | **5.6x** | 9.1x |
-| String-based (`is_binary_string`) | 10 | **12.8x** | 20.7x |
-| **Overall** | **45** | **6.6x** | **12.9x** |
+| File-based (`is_binary`) | 35 | **5.6x** | 10.4x |
+| String-based (`is_binary_string`) | 10 | **20.4x** | 25.4x |
+| **Overall** | **45** | **7.2x** | **13.7x** |
 
 See `tests/benchmark.py` for methodology (10 iterations, 100 calls/iteration).
 

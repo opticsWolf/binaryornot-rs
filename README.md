@@ -1,6 +1,6 @@
 # binaryornot-rs
 
-Rust port of [binaryornot](https://github.com/binaryornot/binaryornot) — an ultra-lightweight library and CLI to check if a file is binary or text. ~6.6x faster than the original Python with PyO3 bindings included.
+Rust port of [binaryornot](https://github.com/binaryornot/binaryornot) — an ultra-lightweight library and CLI to check if a file is binary or text. ~7.2x faster than the original Python with PyO3 bindings included.
 
 ## Install
 
@@ -145,23 +145,19 @@ Python tests (requires installed wheel):
 pip install maturin pytest pytest-timeout
 maturin develop --release
 pytest tests/python/ -v --timeout=60 --timeout-method=thread
-pytest tests/test_binaryornot_rs.py
-pytest tests/test_encoding_coverage.py
-pytest tests/test_encoding_warning.py
-pytest tests/test_sdist.py
 ```
 
-The test suite includes 63 core tests mirroring the original Python test suite, plus encoding coverage tests driven from the CSV data files in `src/binaryornot/data/` (37 text encodings, 49 binary formats), wheel structure tests, and encoding warning tests.
+The test suite includes 67 core tests mirroring the original Python test suite, plus wheel structure tests and encoding warning tests.
 
 ## Benchmark
 
-The PyO3 bindings achieve approximately **6.6x median speedup** over the original pure Python implementation:
+The PyO3 bindings achieve approximately **7.2x median speedup** over the original pure Python implementation (averaged across 10 runs):
 
 | API | Tests | Median Speedup | Mean Speedup |
 |-----|-------|----------------|--------------|
-| File-based (`is_binary`) | 35 | **5.6x** | 9.1x |
-| String-based (`is_binary_string`) | 10 | **12.8x** | 20.7x |
-| **Overall** | **45** | **6.6x** | **12.9x** |
+| File-based (`is_binary`) | 35 | **5.6x** | 10.4x |
+| String-based (`is_binary_string`) | 10 | **20.4x** | 25.4x |
+| **Overall** | **45** | **7.2x** | **13.7x** |
 
 See `tests/benchmark.py` for methodology (10 iterations, 100 calls/iteration).
 
