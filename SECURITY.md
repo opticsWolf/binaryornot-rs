@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you find a security vulnerability in BinaryOrNot, please report it through [GitHub's private vulnerability reporting](https://github.com/binaryornot/binaryornot/security/advisories/new). This keeps the details private while we work on a fix.
+If you find a security vulnerability in binaryornot-rs, please report it through [GitHub's private vulnerability reporting](https://github.com/opticsWolf/binaryornot-rs/security/advisories/new). This keeps details private while we work on a fix.
 
 Please include:
 
@@ -12,20 +12,15 @@ Please include:
 
 ## Security Measures
 
-This project ships with security hardening out of the box:
-
-- **CodeQL** scans code for injection, SSRF, path traversal, and other dataflow vulnerabilities using the `security-extended` query suite
-- **Zizmor** audits GitHub Actions workflows for excessive permissions, unpinned actions, credential exposure, and cache poisoning risks
-- **Dependabot** keeps GitHub Actions pinned by SHA and opens PRs for updates, with a 7-day cooldown to avoid adopting compromised releases immediately
-- **All actions pinned by SHA** with version comments, not floating tags
-- **Minimal workflow permissions** (`permissions: {}` at the top level, scoped per job)
-- **`persist-credentials: false`** on checkout steps to prevent token leakage
+- **CodeQL** scans code for vulnerabilities using the `security-extended` query suite
+- **Dependabot** keeps dependencies updated with a 7-day cooldown
+- **All actions pinned by SHA** with version comments
+- **Minimal workflow permissions** (`permissions: {}` at top level, scoped per job)
+- **`persist-credentials: false`** on checkout steps
 
 ## Response Times
 
 This is a volunteer-maintained open source project. Security reports are taken seriously, but there are no guaranteed response times.
-
-**Enterprise support** is available, with priority response SLAs. Contact aroy@alum.mit.edu for details.
 
 ## Supported Versions
 

@@ -1,143 +1,89 @@
 # Contributing
 
-Contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
+Contributions are welcome! Every little bit helps, and credit will always be given.
 
-You can contribute in many ways:
+## Quick Start
 
-## Types of Contributions
-
-### Report Bugs
-
-Report bugs at https://github.com/binaryornot/binaryornot/issues.
-
-If you are reporting a bug, please include:
-
-- Your operating system name and version.
-- Any details about your local setup that might be helpful in troubleshooting.
-- Detailed steps to reproduce the bug.
-
-### Fix Bugs
-
-Look through the GitHub issues for bugs. Anything tagged with "bug" and "help wanted" is open to whoever wants to implement it.
-
-### Implement Features
-
-Look through the GitHub issues for features. Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
-
-### Write Documentation
-
-BinaryOrNot could always use more documentation, whether as part of the official docs, in docstrings, or even on the web in blog posts, articles, and such.
-
-To preview the docs locally:
-
-```sh
-just docs-serve
-```
-
-This starts a local server at http://localhost:8000 with live reload. Edit files in `docs/` or add docstrings to your code (the API reference page is auto-generated).
-
-### Submit Feedback
-
-The best way to send feedback is to file an issue at https://github.com/binaryornot/binaryornot/issues.
-
-If you are proposing a feature:
-
-- Explain in detail how it would work.
-- Keep the scope as narrow as possible, to make it easier to implement.
-- Remember that this is a volunteer-driven project, and that contributions are welcome :)
-
-## Get Started!
-
-Ready to contribute? Here's how to set up `binaryornot` for local development.
-
-1. Fork the `binaryornot` repo on GitHub.
+1. Fork the `binaryornot-rs` repo on GitHub.
 2. Clone your fork locally:
 
    ```sh
-   git clone git@github.com:your_name_here/binaryornot.git
+   git clone git@github.com:your_name_here/binaryornot-rs.git
+   cd binaryornot-rs
    ```
 
-3. Install your local copy with uv:
+3. Make sure you have Rust installed ([rustup.rs](https://rustup.rs)).
+
+4. Create a branch for your changes:
 
    ```sh
-   cd binaryornot/
-   uv sync
+   git checkout -b name-of-your-change
    ```
 
-4. Create a branch for local development:
+5. Make your changes and verify they pass checks:
 
    ```sh
-   git checkout -b name-of-your-bugfix-or-feature
+   just check
    ```
 
-   Now you can make your changes locally.
+   This runs `cargo fmt --check`, `cargo clippy`, and `cargo test`.
 
-5. When you're done making changes, check that your changes pass linting and the tests:
-
-   ```sh
-   just qa
-   ```
-
-   Or run the tests alone:
-
-   ```sh
-   just test
-   ```
-
-6. Commit your changes and push your branch to GitHub:
+6. Commit and push:
 
    ```sh
    git add .
-   git commit -m "Your detailed description of your changes."
-   git push origin name-of-your-bugfix-or-feature
+   git commit -m "Describe your changes"
+   git push origin name-of-your-change
    ```
 
-7. Submit a pull request through the GitHub website.
+7. Submit a pull request through GitHub.
+
+## Development Commands
+
+All commands are available via [`just`](https://just.systems/man/):
+
+```sh
+just list          # Show available commands
+just check         # Format + clippy + tests
+just fmt           # Format code
+just lint          # Run clippy
+just test          # Run Rust tests
+just test-pyo3     # Run tests with PyO3 bindings
+just build         # Build release binary
+just run README.md # Run the CLI
+just doc           # Generate docs (opens browser)
+just wheel         # Build Python wheel with maturin
+just dev-install   # Install Python bindings locally
+```
 
 ## Pull Request Guidelines
 
-Before you submit a pull request, check that it meets these guidelines:
+1. Include tests for any new functionality.
+2. Update `README.md` if you add features.
+3. Ensure `just check` passes (format, clippy, tests).
+4. Keep the scope narrow — one change per PR when possible.
 
-1. The pull request should include tests.
-2. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in README.md.
-3. The pull request should work for Python 3.12, 3.13, and 3.14. Tests run in GitHub Actions on every pull request to the main branch, make sure that the tests pass for all supported Python versions.
+## Code Style
 
-## Tips
+- Run `cargo fmt` before committing.
+- Run `cargo clippy -- -D warnings` — all clippy warnings must be resolved.
+- Follow the [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/).
 
-To run a subset of tests:
+## Releasing
 
-```sh
-uv run pytest tests/
-```
+1. Bump version in `src/binaryornot-rs/Cargo.toml` and `src/binaryornot-rs/pyproject.toml`.
+2. Update `CHANGELOG.md`.
+3. Commit and tag:
 
-## Releasing a New Version
-
-1. **Bump the version** and **write the changelog:**
-   ```bash
-   uv version <version>        # or: uv version --bump minor
+   ```sh
+   git add .
+   git commit -m "Release v<version>"
+   git tag -a v<version> -m "Release v<version>"
+   git push origin main --tags
    ```
-   Then write `CHANGELOG/<version>.md`. See previous entries for the format.
-2. **Commit:**
-   ```bash
-   git add pyproject.toml uv.lock CHANGELOG/
-   git commit -m "Release <version>"
-   ```
-3. **Tag and push:**
-   ```bash
-   just tag
-   ```
-   This creates an annotated `v*` tag from the version in `pyproject.toml`
-   and pushes the commit and tag to GitHub.
-4. **Wait for the publish workflow.** The tag triggers `.github/workflows/publish.yml`,
-   which builds the package, generates SLSA provenance attestations, and publishes
-   to PyPI via trusted publishing.
-5. **Create the GitHub Release:**
-   ```bash
-   gh release create v<version> --verify-tag \
-     --title "BinaryOrNot <version>" \
-     --notes-file CHANGELOG/<version>.md
-   ```
+
+4. The publish workflow will build and publish to crates.io and PyPI.
 
 ## Code of Conduct
 
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note this project is released with a [Code of Conduct](CODE_OF_CONDUCT.md). By participating you agree to abide by its terms.

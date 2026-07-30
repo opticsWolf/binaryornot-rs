@@ -4,24 +4,30 @@ root = true
 [*]
 charset = utf-8
 end_of_line = lf
-indent_style = space
-indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.{html,css,js,json,sh,yml,yaml}]
+[*.{rs,toml,lock}]
+indent_style = space
+indent_size = 4
+
+[*.{yml,yaml,json,md}]
 indent_size = 2
 
-[*.bat]
-indent_style = tab
-end_of_line = crlf
+[*.sh]
+indent_style = space
+indent_size = 2
 
-[LICENSE]
-insert_final_newline = false
+[*.py]
+indent_style = space
+indent_size = 4
 
 [justfile]
 indent_style = space
 indent_size = 4
+
+[LICENSE]
+insert_final_newline = false
 
 # Ignore binary or generated files
 [*.{png,jpg,gif,ico,woff,woff2,ttf,eot,svg,pdf}]
@@ -32,6 +38,3 @@ indent_size = unset
 trim_trailing_whitespace = unset
 insert_final_newline = unset
 max_line_length = unset
-
-[*.{diff,patch}]
-trim_trailing_whitespace = false

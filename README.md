@@ -11,7 +11,7 @@ cargo install binaryornot
 Or build from source:
 
 ```sh
-git clone https://github.com/binaryornot/binaryornot-rs
+git clone https://github.com/opticsWolf/binaryornot-rs
 cd binaryornot-rs
 cargo build --release
 ```

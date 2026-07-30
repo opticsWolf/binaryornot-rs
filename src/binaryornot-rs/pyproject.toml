@@ -8,7 +8,10 @@ version = "0.6.0"
 description = "Ultra-lightweight Rust library to check if a file is binary or text."
 readme = "README.md"
 license = "MIT"
-authors = [{ name = "Audrey Roy Greenfeld", email = "aroy@alum.mit.edu" }]
+authors = [
+    { name = "Audrey Roy Greenfeld", email = "aroy@alum.mit.edu" },
+    { name = "opticsWolf", email = "opticswolf@protonmail.com" },
+]
 requires-python = ">=3.8"
 keywords = ["binary", "text", "detection", "file", "encoding"]
 classifiers = [
@@ -28,7 +31,7 @@ classifiers = [
 ]
 
 [project.urls]
-Repository = "https://github.com/binaryornot/binaryornot"
+Repository = "https://github.com/opticsWolf/binaryornot-rs"
 
 [tool.maturin]
 features = ["pyo3-ext"]

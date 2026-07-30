@@ -1,54 +1,41 @@
-# Byte-compiled / optimized / DLL files
+# Rust
+**/target/
+**/*.rs.bk
+
+# Cargo
+Cargo.lock
+.cargo/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python (test fixtures and reference tests)
 __pycache__/
-*.py[codz]
-*$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
-build/
-dist/
-eggs/
-.eggs/
+*.py[cod]
 *.egg-info/
-*.egg
-MANIFEST
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-coverage.xml
-.hypothesis/
-.pytest_cache/
-
-# Environments
-.env
-.envrc
-.venv
-
-# uv
-#   Generally recommended to include uv.lock in version control for
-#   reproducibility. Uncomment for libraries where you want consumers
-#   to resolve their own dependencies.
-# uv.lock
-
-# Ruff
+# Linters / type checkers
+.mypy_cache/
+.pytype/
 .ruff_cache/
 
-# Type checkers
-.mypy_cache/
-.dmypy.json
-dmypy.json
-.pyre/
-.pytype/
+# Coverage / testing
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
 
-# Documentation build output
-site/
-
-# IDE files
-# .idea/
-# .vscode/
+# OS
+.DS_Store
+Thumbs.db
